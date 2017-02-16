@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.horstmann.violet.application.gui.MainFrame;
+import com.horstmann.violet.application.gui.NewOpenFrame;
 import com.horstmann.violet.application.gui.SplashScreen;
 import com.horstmann.violet.framework.dialog.DialogFactory;
 import com.horstmann.violet.framework.dialog.DialogFactoryMode;
@@ -161,6 +162,7 @@ public class UMLEditorApplication
         MainFrame mainFrame = new MainFrame();
         mainFrame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
         mainFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        NewOpenFrame newOpenFrame = new NewOpenFrame(mainFrame);
         SplashScreen.displayOverEditor(mainFrame, 1000);
         List<IFile> fullList = new ArrayList<IFile>();
         List<IFile> lastSessionFiles = this.userPreferencesService.getOpenedFilesDuringLastSession();
@@ -200,6 +202,7 @@ public class UMLEditorApplication
         mainFrame.setVisible(true);
         splashScreen.setVisible(false);
         splashScreen.dispose();
+        newOpenFrame.setVisible(true);
     }
 
     /**
