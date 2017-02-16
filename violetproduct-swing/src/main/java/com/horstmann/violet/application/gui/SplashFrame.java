@@ -11,6 +11,7 @@ import com.horstmann.violet.framework.file.naming.FileNamingService;
 import com.horstmann.violet.framework.file.persistence.IFileReader;
 import com.horstmann.violet.framework.injection.bean.ManiocFramework.BeanInjector;
 import com.horstmann.violet.framework.injection.bean.ManiocFramework.InjectedBean;
+import com.horstmann.violet.framework.injection.resources.ResourceBundleInjector;
 import com.horstmann.violet.framework.injection.resources.annotation.ResourceBundleBean;
 import com.horstmann.violet.framework.plugin.IDiagramPlugin;
 import com.horstmann.violet.framework.plugin.PluginRegistry;
@@ -49,8 +50,6 @@ public class SplashFrame {
     private JPanel welcomePanel = new JPanel();
     private JPanel openRecentPanel = new JPanel();
     private JPanel mainPanel = new JPanel();
-    private JPanel dynamicViewPanel = new JPanel();
-    private JPanel staticViewPanel = new JPanel();
     private JPanel viewsPanel = new JPanel();
 
     private CardLayout cardLayout = new CardLayout();
@@ -66,22 +65,23 @@ public class SplashFrame {
         mainPanel.setLayout(cardLayout);
         frame.setTitle("Okno Powitalne");
         this.mainFrame = mainFrame;
+        ResourceBundleInjector.getInjector().inject(this);
         BeanInjector.getInjector().inject(this);
         diagramPlugins = pluginRegistry.getDiagramPlugins();
 
         frame.setSize(300, 300);
         frame.setResizable(false);
-        btnNewProject = new JButton("Nowy projekt");
-        btnOpenProject = new JButton("Otworz projekt");
-        btnOpenRecent = new JButton("Ostatni projekt");
+        btnNewProject = new JButton(btnNameNewProject);
+        btnOpenProject = new JButton(btnNameOpenProject);
+        btnOpenRecent = new JButton(btnNameOpenRecent);
 
-        btnActivityDiagram = new JButton("Diagram aktywności");
-        btnClassDiagram = new JButton("Diagram klas");
-        btnComunicationDiagram = new JButton("Diagram komunikacji");
-        btnSequenceDiagram = new JButton("Diagram sekwencji");
-        btnStateDiagram = new JButton("Diagram stanów");
-        btnUseCaseDiagram = new JButton("Diagram przypadków użycia");
-        btnObjectDiagram = new JButton("Diagram obiektów");
+        btnActivityDiagram = new JButton(btnNameActivityDiagram);
+        btnClassDiagram = new JButton(btnNameClassDiagram);
+        btnComunicationDiagram = new JButton(btnNameComunicationDiagram);
+        btnSequenceDiagram = new JButton(btnNameSequenceDiagram);
+        btnStateDiagram = new JButton(btnNameStateDiagram);
+        btnUseCaseDiagram = new JButton(btnNameUseCaseDiagram);
+        btnObjectDiagram = new JButton(btnNameObjectDiagram);
 
         viewsPanel.add(btnComunicationDiagram);
         viewsPanel.add(btnSequenceDiagram);
@@ -290,6 +290,40 @@ public class SplashFrame {
      */
     @ResourceBundleBean(key = "workspace.unsaved_prefix")
     private String unsavedPrefix;
+
+    /**
+     * Name of this buttons from properties file
+     */
+    @ResourceBundleBean(key = "nameBtnNewProject")
+    private String btnNameNewProject;
+
+    @ResourceBundleBean(key = "nameBtnOpenProject")
+    private String btnNameOpenProject;
+
+    @ResourceBundleBean(key = "nameBtnOpenRecent")
+    private String btnNameOpenRecent;
+
+    @ResourceBundleBean(key = "nameBtnActivityDiagram")
+    private String btnNameActivityDiagram;
+
+    @ResourceBundleBean(key = "nameBtnClassDiagram")
+    private String btnNameClassDiagram;
+
+    @ResourceBundleBean(key = "nameBtnComunicationDiagram")
+    private String btnNameComunicationDiagram;
+
+    @ResourceBundleBean(key = "nameBtnSequenceDiagram")
+    private String btnNameSequenceDiagram;
+
+    @ResourceBundleBean(key = "nameBtnStateDiagram")
+    private String btnNameStateDiagram;
+
+    @ResourceBundleBean(key = "nameBtnUseCaseDiagram")
+    private String btnNameUseCaseDiagram;
+
+    @ResourceBundleBean(key = "nameBtnObjectDiagram")
+    private String btnNameObjectDiagram;
+
 
 
 }
