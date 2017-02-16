@@ -26,18 +26,21 @@ public class ClassNodeBeanInfo extends ColorableNodeBeanInfo
     {
         List<PropertyDescriptor> propertyDescriptorList = super.createPropertyDescriptorList();
 
-        propertyDescriptorList.add(createPropertyDescriptor(NAME_VAR_NAME, NAME_LABEL_KEY, 1));
-        propertyDescriptorList.add(createPropertyDescriptor(ATTRIBUTES_VAR_NAME, ATTRIBUTES_LABEL_KEY, 2));
-        propertyDescriptorList.add(createPropertyDescriptor(METHODS_VAR_NAME, METHODS_LABEL_KEY, 3));
-        propertyDescriptorList.add(createPropertyDescriptor(COMMENT_VAR_NAME, COMMENT_LABEL_KEY, 4));
+        propertyDescriptorList.add(createPropertyDescriptor(STEREOTYPES_VAR_NAME, STEREOTYPES_LABEL_KEY, 1));
+        propertyDescriptorList.add(createPropertyDescriptor(NAME_VAR_NAME, NAME_LABEL_KEY, 2));
+        propertyDescriptorList.add(createPropertyDescriptor(ATTRIBUTES_VAR_NAME, ATTRIBUTES_LABEL_KEY, 3));
+        propertyDescriptorList.add(createPropertyDescriptor(METHODS_VAR_NAME, METHODS_LABEL_KEY, 4));
+        propertyDescriptorList.add(createPropertyDescriptor(COMMENT_VAR_NAME, COMMENT_LABEL_KEY, 5));
 
         return propertyDescriptorList;
     }
 
+    protected static final String STEREOTYPES_LABEL_KEY = "class.stereotypes";
     protected static final String NAME_LABEL_KEY = "class.name";
     protected static final String ATTRIBUTES_LABEL_KEY = "class.attributes";
     protected static final String METHODS_LABEL_KEY = "class.methods";
     private static final String COMMENT_LABEL_KEY = "class.comment";
+    private static final String STEREOTYPES_VAR_NAME = "stereotypes";
     private static final String NAME_VAR_NAME = "name";
     private static final String ATTRIBUTES_VAR_NAME = "attributes";
     private static final String METHODS_VAR_NAME = "methods";
