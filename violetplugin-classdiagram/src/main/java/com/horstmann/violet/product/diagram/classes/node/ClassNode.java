@@ -29,7 +29,6 @@ public class ClassNode extends ColorableNode implements INamedNode
     public ClassNode()
     {
         super();
-        stereotypes = new SingleLineText(STEREOTYPES_CONVERTER);
         name = new SingleLineText(NAME_CONVERTER);
         name.setAlignment(LineText.CENTER);
         attributes = new MultiLineText(PROPERTY_CONVERTER);
@@ -41,7 +40,6 @@ public class ClassNode extends ColorableNode implements INamedNode
     protected ClassNode(ClassNode node) throws CloneNotSupportedException
     {
         super(node);
-        stereotypes = node.stereotypes.clone();
         name = node.name.clone();
         attributes = node.attributes.clone();
         methods = node.methods.clone();
@@ -54,10 +52,6 @@ public class ClassNode extends ColorableNode implements INamedNode
     {
         super.beforeReconstruction();
 
-        if(null == stereotypes)
-        {
-            stereotypes = new SingleLineText();
-        }
         if(null == name)
         {
             name = new SingleLineText();
@@ -74,7 +68,6 @@ public class ClassNode extends ColorableNode implements INamedNode
         {
             comment = new MultiLineText();
         }
-        stereotypes.reconstruction(STEREOTYPES_CONVERTER);
         name.reconstruction(NAME_CONVERTER);
         attributes.reconstruction(PROPERTY_CONVERTER);
         methods.reconstruction(PROPERTY_CONVERTER);
@@ -91,7 +84,6 @@ public class ClassNode extends ColorableNode implements INamedNode
     @Override
     protected void createContentStructure()
     {
-        TextContent stereotypeContent = new TextContent(stereotypes);
         TextContent nameContent = new TextContent(name);
         nameContent.setMinHeight(MIN_NAME_HEIGHT);
         nameContent.setMinWidth(MIN_WIDTH);
@@ -99,7 +91,6 @@ public class ClassNode extends ColorableNode implements INamedNode
         TextContent methodsContent = new TextContent(methods);
         TextContent commentContent = new TextContent(comment);
         VerticalLayout verticalGroupContent = new VerticalLayout();
-        verticalGroupContent.add(stereotypeContent);
         verticalGroupContent.add(nameContent);
         verticalGroupContent.add(attributesContent);
         verticalGroupContent.add(methodsContent);
@@ -128,7 +119,6 @@ public class ClassNode extends ColorableNode implements INamedNode
     @Override
     public void setTextColor(Color textColor)
     {
-        stereotypes.setTextColor(textColor);
         name.setTextColor(textColor);
         attributes.setTextColor(textColor);
         methods.setTextColor(textColor);
@@ -180,22 +170,6 @@ public class ClassNode extends ColorableNode implements INamedNode
     {
         return name;
     }
-
-    /**
-     * Sets the name property value.
-     *
-     * @param newValue the class name
-     */
-    public void setStereotypes(LineText newValue){
-        stereotypes.setText(newValue);
-    }
-
-    /**
-     * Gets the name property value.
-     *
-     * @return the the stereotypes of this class
-     */
-    public LineText getStereotypes(){ return stereotypes; }
 
     /**
      * Sets the attributes property value.
@@ -257,7 +231,6 @@ public class ClassNode extends ColorableNode implements INamedNode
         return comment;
     }
 
-    private SingleLineText stereotypes;
     private SingleLineText name;
     private MultiLineText attributes;
     private MultiLineText methods;
@@ -292,31 +265,6 @@ public class ClassNode extends ColorableNode implements INamedNode
             ABSTRACT,
             HIDE
     );
-
-    private static final LineText.Converter STEREOTYPES_CONVERTER = new LineText.Converter()
-    {
-        @Override
-        public OneLineText toLineString(String text)
-        {
-            String tempText;
-            if(text.contains("«") && text.contains("»")){
-                tempText = text;
-            } else {
-                tempText = "«" + text + "»";
-            }
-
-            OneLineText controlText = new OneLineText(tempText);
-            OneLineText lineString = new LargeSizeDecorator(controlText);
-
-
-            lineString = new PrefixDecorator(new RemoveSentenceDecorator(
-                    lineString, tempText), String.format("<center>%s</center>", tempText));
-
-
-
-            return lineString;
-        }
-    };
 
     private static final LineText.Converter NAME_CONVERTER = new LineText.Converter()
     {
