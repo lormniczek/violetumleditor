@@ -29,8 +29,6 @@ import java.util.List;
 
 /**
  * This desktop frame contains panes that show menu to create/open projects.
- *
- * @author Maciej Kupniewski
  */
 public class SplashFrame {
 
@@ -63,10 +61,10 @@ public class SplashFrame {
      */
     public SplashFrame(final MainFrame mainFrame) {
         mainPanel.setLayout(cardLayout);
-        frame.setTitle("Okno Powitalne");
-        this.mainFrame = mainFrame;
         ResourceBundleInjector.getInjector().inject(this);
         BeanInjector.getInjector().inject(this);
+        frame.setTitle(titleWindow);
+        this.mainFrame = mainFrame;
         diagramPlugins = pluginRegistry.getDiagramPlugins();
 
         frame.setSize(300, 300);
@@ -290,6 +288,11 @@ public class SplashFrame {
      */
     @ResourceBundleBean(key = "workspace.unsaved_prefix")
     private String unsavedPrefix;
+    /**
+     * Name of splash window title
+     */
+    @ResourceBundleBean(key = "windowTitle")
+    private String titleWindow;
 
     /**
      * Name of this buttons from properties file
