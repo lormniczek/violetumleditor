@@ -22,15 +22,19 @@
 package com.horstmann.violet.workspace.editorpart;
 
 import com.horstmann.violet.framework.injection.resources.ResourceBundleConstant;
+import com.horstmann.violet.framework.util.nodeusage.NodeUsage;
+import com.horstmann.violet.framework.util.nodeusage.NodeUsagesFinder;
 import com.horstmann.violet.product.diagram.abstracts.IGraph;
 import com.horstmann.violet.product.diagram.abstracts.edge.IEdge;
 import com.horstmann.violet.product.diagram.abstracts.node.INode;
 import com.horstmann.violet.workspace.editorpart.behavior.IEditorPartBehavior;
+import com.horstmann.violet.workspace.editorpart.enums.Direction;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.Rectangle2D;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -166,16 +170,23 @@ public class EditorPart extends JPanel implements IEditorPart
         {
             final List<INode> selectedNodes = selectionHandler.getSelectedNodes();
             final List<IEdge> selectedEdges = selectionHandler.getSelectedEdges();
-            final IEdge[] edgesArray = selectedEdges.toArray(new IEdge[selectedEdges.size()]);
-            final INode[] nodesArray = selectedNodes.toArray(new INode[selectedNodes.size()]);
-            graph.removeNode(nodesArray);
-            graph.removeEdge(edgesArray);
+            remove(selectedNodes, selectedEdges);
         }
         finally
         {
             this.selectionHandler.clearSelection();
             this.behaviorManager.fireAfterRemovingSelectedElements();
         }
+    }
+
+    @Override
+    public List<NodeUsage> getSelectedNodesUsages()
+    {
+        final List<INode> selectedNodes = selectionHandler.getSelectedNodes();
+        final Collection<INode> allNodes = graph.getAllNodes();
+
+        final NodeUsagesFinder nodeUsagesFinder = new NodeUsagesFinder();
+        return nodeUsagesFinder.findNodesUsages(selectedNodes, allNodes);
     }
 
     @Override
@@ -328,5 +339,21 @@ public class EditorPart extends JPanel implements IEditorPart
     {
         return this.behaviorManager;
     }
+
+    private void remove(final List<INode> nodes, final List<IEdge> edges)
+    {
+        final IEdge[] edgesArray = edges.toArray(new IEdge[edges.size()]);
+        final INode[] nodesArray = nodes.toArray(new INode[nodes.size()]);
+        graph.removeNode(nodesArray);
+        graph.removeEdge(edgesArray);
+    }
+
+    @Override
+    public void align(Direction direction){
+        Align align = new Align();
+        align.alignElements(getSelectedNodes(),direction);
+        repaint();
+    }
+
 
 }

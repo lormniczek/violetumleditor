@@ -17,10 +17,11 @@
     <module>violetplugin-objectdiagram</module>
     <module>violetplugin-sequencediagram</module>
     <module>violetplugin-statediagram</module>
+    <module>violetplugin-componentdiagram</module>
     <module>violetplugin-usecasediagram</module>
     <module>violetproduct-swing</module>
     <module>violetproduct-deb</module>
-    
+
     <!-- Modules 'exe' and 'web' are commented out because they're causing problems during project build-->
     <!--<module>violetproduct-exe</module>-->
     <!--<module>violetproduct-web</module>-->
@@ -52,7 +53,7 @@
           <artifactId>maven-resources-plugin</artifactId>
           <version>2.4.3</version>
           <configuration>
-            <encoding>ISO-8859-1</encoding>
+            <encoding>UTF-8</encoding>
           </configuration>
         </plugin>
         <plugin>
@@ -61,7 +62,7 @@
           <configuration>
             <source>1.8</source>
             <target>1.8</target>
-            <encoding>ISO-8859-1</encoding>
+            <encoding>UTF-8</encoding>
           </configuration>
         </plugin>
       </plugins>

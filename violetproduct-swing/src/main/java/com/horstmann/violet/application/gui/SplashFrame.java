@@ -288,6 +288,7 @@ public class SplashFrame {
      */
     @ResourceBundleBean(key = "workspace.unsaved_prefix")
     private String unsavedPrefix;
+
     /**
      * Name of splash window title
      */
@@ -326,7 +327,4 @@ public class SplashFrame {
 
     @ResourceBundleBean(key = "nameBtnObjectDiagram")
     private String btnNameObjectDiagram;
-
-
-
 }

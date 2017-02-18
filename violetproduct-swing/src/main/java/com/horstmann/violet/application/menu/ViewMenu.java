@@ -21,6 +21,7 @@
 
 package com.horstmann.violet.application.menu;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -35,6 +36,7 @@ import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
 
 import com.horstmann.violet.application.gui.MainFrame;
+import com.horstmann.violet.application.swingextension.GraphicsDeviceDetector;
 import com.horstmann.violet.framework.dialog.DialogFactory;
 import com.horstmann.violet.framework.injection.bean.ManiocFramework.BeanInjector;
 import com.horstmann.violet.framework.injection.bean.ManiocFramework.InjectedBean;
@@ -94,6 +96,15 @@ public class ViewMenu extends JMenu
         });
         this.add(zoomIn);
 
+        fullscreen.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent event)
+            {
+                performFullScreen();
+            }
+        });
+        this.add(fullscreen);
+
         growDrawingArea.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent event)
@@ -142,10 +153,11 @@ public class ViewMenu extends JMenu
         {
             public void menuSelected(MenuEvent event)
             {
-                if (mainFrame.getWorkspaceList().size() == 0) return;
-                IWorkspace activeWorkspace = mainFrame.getActiveWorkspace();
-                IEditorPart activeEditor = activeWorkspace.getEditorPart();
-                hideGridItem.setSelected(!activeEditor.getGrid().isVisible());
+                if (mainFrame.getWorkspaceList().size() != 0) {
+                    IWorkspace activeWorkspace = mainFrame.getActiveWorkspace();
+                    IEditorPart activeEditor = activeWorkspace.getEditorPart();
+                    hideGridItem.setSelected(!activeEditor.getGrid().isVisible());
+                }
             }
 
             public void menuDeselected(MenuEvent event)
@@ -163,7 +175,7 @@ public class ViewMenu extends JMenu
         for (ITheme aTheme : themes)
         {
             ThemeInfo themeInfo = aTheme.getThemeInfo();
-        	String themeName = themeInfo.getName();
+            String themeName = themeInfo.getName();
             final String themeClassName = themeInfo.getThemeClass().getName();
             JMenuItem lafMenu = new JCheckBoxMenuItem(themeName);
             lafMenu.addActionListener(new ActionListener()
@@ -189,9 +201,11 @@ public class ViewMenu extends JMenu
      */
     private void performZoomOut()
     {
-        if (mainFrame.getWorkspaceList().size() == 0) return;
-        IWorkspace workspace = mainFrame.getActiveWorkspace();
-        workspace.getEditorPart().zoomOut();
+        if (mainFrame.getWorkspaceList().size() != 0)
+        {
+            IWorkspace workspace = mainFrame.getActiveWorkspace();
+            workspace.getEditorPart().zoomOut();
+        }
     }
 
     /**
@@ -199,9 +213,26 @@ public class ViewMenu extends JMenu
      */
     private void performZoomIn()
     {
-        if (mainFrame.getWorkspaceList().size() == 0) return;
-        IWorkspace workspace = mainFrame.getActiveWorkspace();
-        workspace.getEditorPart().zoomIn();
+        if (mainFrame.getWorkspaceList().size() != 0)
+        {
+            IWorkspace workspace = mainFrame.getActiveWorkspace();
+            workspace.getEditorPart().zoomIn();
+        }
+    }
+
+    /**
+     * Performs fullscreen in action
+     */
+    private void performFullScreen()
+    {
+        final GraphicsDevice activeGraphicsDevice = new GraphicsDeviceDetector(mainFrame).detect();
+
+        if (activeGraphicsDevice.getFullScreenWindow()==null) {
+            activeGraphicsDevice.setFullScreenWindow(mainFrame);
+        }
+        else {
+            activeGraphicsDevice.setFullScreenWindow(null);
+        }
     }
 
     /**
@@ -209,9 +240,11 @@ public class ViewMenu extends JMenu
      */
     private void performGrowDrawingArea()
     {
-        if (mainFrame.getWorkspaceList().size() == 0) return;
-        IWorkspace workspace = mainFrame.getActiveWorkspace();
-        workspace.getEditorPart().growDrawingArea();
+        if (mainFrame.getWorkspaceList().size() != 0)
+        {
+            IWorkspace workspace = mainFrame.getActiveWorkspace();
+            workspace.getEditorPart().growDrawingArea();
+        }
     }
 
     /**
@@ -219,9 +252,11 @@ public class ViewMenu extends JMenu
      */
     private void performClipDrawingArea()
     {
-        if (mainFrame.getWorkspaceList().size() == 0) return;
-        IWorkspace workspace = mainFrame.getActiveWorkspace();
-        workspace.getEditorPart().clipDrawingArea();
+        if (mainFrame.getWorkspaceList().size() != 0)
+        {
+            IWorkspace workspace = mainFrame.getActiveWorkspace();
+            workspace.getEditorPart().clipDrawingArea();
+        }
     }
 
     /**
@@ -229,11 +264,12 @@ public class ViewMenu extends JMenu
      */
     private void performDisplaySmallerGrid()
     {
-        if (mainFrame.getWorkspaceList().size() == 0) return;
-        IWorkspace workspace = mainFrame.getActiveWorkspace();
-        IEditorPart editorPart = workspace.getEditorPart();
-        editorPart.getGrid().changeGridSize(-1);
-        editorPart.getSwingComponent().repaint();
+        if (mainFrame.getWorkspaceList().size() != 0) {
+            IWorkspace workspace = mainFrame.getActiveWorkspace();
+            IEditorPart editorPart = workspace.getEditorPart();
+            editorPart.getGrid().changeGridSize(-1);
+            editorPart.getSwingComponent().repaint();
+        }
     }
 
     /**
@@ -241,11 +277,13 @@ public class ViewMenu extends JMenu
      */
     private void performDisplayLargerGrid()
     {
-        if (mainFrame.getWorkspaceList().size() == 0) return;
-        IWorkspace workspace = mainFrame.getActiveWorkspace();
-        IEditorPart editorPart = workspace.getEditorPart();
-        editorPart.getGrid().changeGridSize(1);
-        editorPart.getSwingComponent().repaint();
+        if (mainFrame.getWorkspaceList().size() != 0)
+        {
+            IWorkspace workspace = mainFrame.getActiveWorkspace();
+            IEditorPart editorPart = workspace.getEditorPart();
+            editorPart.getGrid().changeGridSize(1);
+            editorPart.getSwingComponent().repaint();
+        }
     }
 
     /**
@@ -255,19 +293,21 @@ public class ViewMenu extends JMenu
      */
     private void performHideGrid(ActionEvent event)
     {
-        if (mainFrame.getWorkspaceList().size() == 0) return;
-        IWorkspace workspace = mainFrame.getActiveWorkspace();
-        boolean isHidden = hideGridItem.isSelected();
-        IEditorPart editorPart = workspace.getEditorPart();
-        if (isHidden)
+        if (mainFrame.getWorkspaceList().size() != 0)
         {
-            editorPart.getGrid().setVisible(false);
+            IWorkspace workspace = mainFrame.getActiveWorkspace();
+            boolean isHidden = hideGridItem.isSelected();
+            IEditorPart editorPart = workspace.getEditorPart();
+            if (isHidden)
+            {
+                editorPart.getGrid().setVisible(false);
+            }
+            else
+            {
+                editorPart.getGrid().setVisible(true);
+            }
+            editorPart.getSwingComponent().repaint();
         }
-        else
-        {
-            editorPart.getGrid().setVisible(true);
-        }
-        editorPart.getSwingComponent().repaint();
     }
 
     /**
@@ -277,7 +317,7 @@ public class ViewMenu extends JMenu
      */
     private void performChangeLookAndFeel(String className)
     {
-    	this.themeManager.setPreferedLookAndFeel(className);
+        this.themeManager.setPreferedLookAndFeel(className);
         JOptionPane optionPane = new JOptionPane();
         optionPane.setMessage(changeLAFDialogMessage);
         optionPane.setIcon(changeLAFDialogIcon);
@@ -294,6 +334,9 @@ public class ViewMenu extends JMenu
 
     @ResourceBundleBean(key = "view.zoom_in")
     private JMenuItem zoomIn;
+
+    @ResourceBundleBean(key = "view.fullscreen")
+    private JMenuItem fullscreen;
 
     @ResourceBundleBean(key = "view.grow_drawing_area")
     private JMenuItem growDrawingArea;
